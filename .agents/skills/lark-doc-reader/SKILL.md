@@ -1,6 +1,6 @@
 ---
 name: lark-doc-reader
-description: Use when reading Feishu/Lark wiki or document links for the user through lark-cli. If lark-cli is missing, unconfigured, or user authorization is invalid, guide the user to fix the local CLI setup and then retry the read.
+description: Use when reading Feishu/Lark wiki or document links for the user through lark-cli. If lark-cli is missing, unconfigured, or user authorization is invalid, execute the local CLI setup step by step, pause only for required user/browser interaction, then retry the read.
 ---
 
 # Lark Doc Reader
@@ -20,21 +20,26 @@ Use this skill when the user asks to read, summarize, inspect, or use content fr
 
 2. Verify local `lark-cli` availability before reading.
    - Check `lark-cli --help`, `lark-cli config --help`, or `lark-cli auth status`.
-   - If `lark-cli` is missing, broken, or clearly unconfigured, switch into local CLI setup guidance instead of trying to read the document.
-   - Do not ask the user to paste document content until the local CLI path has been attempted or the user chooses not to configure it.
+   - If `lark-cli` is missing, broken, or clearly unconfigured, do not stop at generic guidance. Execute the setup steps directly when the environment permits.
+   - If a command fails because of sandbox or network restrictions, rerun it with escalation approval instead of asking the user to execute it manually.
+   - Do not ask the user to paste document content until the local CLI path has been attempted or the user declines further setup.
 
-3. If local `lark-cli` is not ready, guide the user to configure it.
-   - Verify the CLI is installed.
-   - If needed, initialize a local app profile:
+3. If local `lark-cli` is not ready, execute setup step by step.
+   - Verify whether `npm` is available.
+   - If `lark-cli` is missing and `npm` exists, install it directly:
+     - `npm install -g @larksuite/cli@1.0.39`
+   - If `npm` is missing, stop and tell the user that Node.js/npm is the blocker.
+   - If the CLI is installed but not configured, run:
      - `lark-cli config init --new`
+   - If `config init` requires app information or an interactive choice the agent cannot safely infer, ask only for that missing input.
    - Ensure the app security settings include:
      - `http://localhost:3000/callback`
-   - Log in with:
-     - `lark-cli auth login --recommend`
-   - If the harness cannot block for browser login, use:
+   - Prefer to inspect current state before asking the user to change anything.
+   - For user authorization, first try:
      - `lark-cli auth login --recommend --no-wait --json`
-   - Show the returned browser verification URL exactly as printed.
-   - After authorization, confirm the CLI state with:
+   - Show the returned browser verification URL exactly as printed and ask the user to complete authorization.
+   - If the environment supports blocking interactive login and that is clearly simpler, `lark-cli auth login --recommend` is acceptable.
+   - After the user finishes authorization, confirm the CLI state with:
      - `lark-cli auth status`
    - The expected state is:
      - `identity: user`
@@ -52,25 +57,29 @@ Use this skill when the user asks to read, summarize, inspect, or use content fr
 
 5. If `lark-cli` shows missing or expired user authorization:
    - Prefer `lark-cli auth status` to confirm the current state.
-   - If needed, run `lark-cli auth login --recommend`.
+   - If needed, run `lark-cli auth login --recommend --no-wait --json` first, because it is easier to continue from a non-blocking terminal flow.
+   - Use `lark-cli auth login --recommend` only when the environment can wait on the login flow cleanly.
    - If the CLI prints a browser verification URL, copy it into the conversation directly.
-   - Tell the user the command may block while waiting for authorization, and ask them to confirm after completion before retrying the original read.
+   - Ask the user to confirm after the browser-side authorization completes, then retry the original read.
 
 6. If authorization succeeds, retry the original read request and continue with the user's requested task.
 
 ## Rules
 
 - Treat local CLI setup and user authorization as operational prerequisites, not as document-reading failures.
+- Default to doing the setup work yourself with tools, not narrating manual steps for the user to run.
+- Pause only when a browser login, app-console action, secret, or ambiguous interactive choice requires the user.
 - Keep authorization under user control. Do not ask for passwords, secrets, or pasted tokens.
 - Do not claim the document was read until `lark-cli` returns node metadata or document content.
 - If the user lacks permission to the document after valid authorization, say so and ask them to grant access or provide the content another way.
 - When the document content is used as source material for a backend spec, treat it as evidence, not automatically correct requirements.
+- When installation, auth, or document fetch commands fail due to sandbox or network restrictions, rerun them with escalation approval rather than stopping at a diagnosis.
 
 ## Troubleshooting
 
 | Symptom | Likely Cause | Action |
 |---|---|---|
-| `lark-cli: command not found` | CLI not installed | ask the user to install `lark-cli` first |
+| `lark-cli: command not found` | CLI not installed | install `@larksuite/cli@1.0.39` directly; if blocked by sandbox or network, rerun with escalation |
 | `needs_refresh` / invalid user token | user token expired or missing | rerun `lark-cli auth login --recommend` |
 | redirect URL rejected | app security callback not configured | add `http://localhost:3000/callback` in app security settings |
 | app credentials not found | CLI config not initialized or wrong profile selected | rerun `lark-cli config init --new` or inspect `lark-cli config show` |
