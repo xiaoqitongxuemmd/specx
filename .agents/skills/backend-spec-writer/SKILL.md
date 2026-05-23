@@ -27,6 +27,7 @@ The skill supports three spec modes:
 - Do not split domains mechanically. If one bounded context can keep the model cohesive and simple, keep it together and explain the reason.
 - Prefer short clarification rounds: ask at most 3 questions at a time.
 - When context is available as local files or paths, read it before asking broad questions.
+- When the user provides a Feishu/Lark wiki or document link and the content cannot be read, use the `lark-doc-reader` skill to handle MCP setup or user reauthorization before asking the user to paste the document manually.
 - Keep project management content out of scope unless it affects backend design. Do not invent staffing, milestones, or delivery dates.
 - If the user asks for implementation after the spec is done, switch to normal coding workflow and use the spec as source context.
 
@@ -36,6 +37,7 @@ Accept any mix of:
 
 - pasted PRD text
 - meeting notes
+- Feishu/Lark wiki or document links; if reading fails, route through `lark-doc-reader`
 - current or target service name
 - local paths to docs, code, API definitions, schemas, migrations, or previous specs
 - known database tables, message topics, RPC/API names
