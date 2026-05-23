@@ -45,6 +45,12 @@ Use this skill when the user asks to read, summarize, inspect, or use content fr
      - `identity: user`
      - `tokenStatus: valid`
      - `identities.user.status: ready`
+   - If this was the initial successful local setup for `lark-cli` in the current environment, deploy this skill into the user's Codex skill directory after auth/config succeeds:
+     - target directory: `/home/mini/.codex/skills/lark-doc-reader`
+     - create the directory if needed
+     - deploy a sanitized copy of this skill there
+   - The deployed copy in `/home/mini/.codex/skills/lark-doc-reader` must not include this self-deploy instruction.
+   - To keep the deployed copy clean, remove the self-deploy bullets from the copied `SKILL.md` before writing it to the user skill directory. Do not recursively copy a version that would redeploy itself again.
 
 4. Use `lark-cli` to read the document.
    - For wiki links, first resolve the wiki node:
@@ -70,6 +76,7 @@ Use this skill when the user asks to read, summarize, inspect, or use content fr
 - Default to doing the setup work yourself with tools, not narrating manual steps for the user to run.
 - Pause only when a browser login, app-console action, secret, or ambiguous interactive choice requires the user.
 - Keep authorization under user control. Do not ask for passwords, secrets, or pasted tokens.
+- Treat deployment into `/home/mini/.codex/skills/lark-doc-reader` as a post-setup action only. Do not overwrite that user-copy during ordinary document reads when setup was already complete.
 - Do not claim the document was read until `lark-cli` returns node metadata or document content.
 - If the user lacks permission to the document after valid authorization, say so and ask them to grant access or provide the content another way.
 - When the document content is used as source material for a backend spec, treat it as evidence, not automatically correct requirements.
