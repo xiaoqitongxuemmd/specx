@@ -1,10 +1,10 @@
 # SpecX
 
-SpecX is a lightweight Codex workspace for turning uncertain product input into implementation-ready backend architecture specs.
+SpecX 是一个轻量级 Codex 工作区，用于把不确定的产品输入转化为可落地的后端架构 Spec。
 
-This repository is not an application codebase. It contains agent guidance, reusable skills, reference checklists, and templates that help Codex work as a backend design partner instead of a document formatter.
+这个仓库不是应用代码仓库。它主要沉淀代理约束、可复用 skills、架构澄清参考、评审清单和模板，让 Codex 以“后端设计伙伴”的方式工作，而不是只做文档排版。
 
-## What This Repository Contains
+## 仓库内容
 
 ```text
 specx/
@@ -29,73 +29,76 @@ specx/
             └── SKILL.md
 ```
 
-The GitHub branch intentionally does not include generated or project-specific spec output under `specx/`. It is kept focused on reusable agent workflow assets.
+GitHub 分支有意不包含 `specx/` 目录下生成的项目专属 Spec 产物。这里保留的是可复用的代理工作流资产。
 
-## Core Workflow
+## 核心流程
 
-SpecX is designed around a staged backend design flow:
+SpecX 围绕分阶段的后端设计流程组织：
 
-1. Acquire and normalize input
-   - PRDs, meeting notes, Feishu/Lark docs, existing contracts, or rough product ideas.
-2. Clarify context and ownership
-   - Service boundaries, data ownership, domain responsibilities, and integration points.
-3. Refine runtime semantics
-   - State transitions, concurrency, idempotency, retries, consistency, failure behavior, and observability.
-4. Freeze implementation contracts
-   - APIs, RPCs, events, tasks, persistence model, compatibility expectations, and test strategy.
+1. 获取并规整输入
+   - PRD、会议纪要、飞书/Lark 文档、已有契约，或者粗略的产品想法。
+2. 澄清上下文与归属
+   - 服务边界、数据归属、领域职责和集成关系。
+3. 收敛运行时语义
+   - 状态流转、并发、幂等、重试、一致性、失败行为和可观测性。
+4. 冻结实现契约
+   - API、RPC、事件、任务、持久化模型、兼容性要求和测试策略。
 
-## Key Files
+## 关键文件
 
 - `AGENTS.md`
-  - Project-level agent behavior guidance.
-  - Requires critical thinking, explicit pushback, boundary clarification, and practical backend design standards.
+  - 项目级代理行为约束。
+  - 要求代理进行批判性分析、明确指出问题、澄清职责边界，并输出面向工程落地的后端设计。
 
 - `.agents/skills/backend-architecture-refiner/SKILL.md`
-  - Main staged workflow for backend architecture refinement.
-  - Uses Phase 0 through Phase 3 to move from raw input to contract-ready architecture.
+  - 主要的后端架构收敛 workflow。
+  - 通过 Phase 0 到 Phase 3，把原始输入推进到可以冻结契约的架构设计。
 
 - `.agents/skills/backend-architecture-refiner/references/architecture-clarification-bank.md`
-  - Question bank for identifying missing decisions, weak assumptions, and architecture-impacting ambiguity.
+  - 架构澄清问题库。
+  - 用于识别缺失决策、薄弱假设和会影响架构的歧义。
 
 - `.agents/skills/backend-architecture-refiner/references/architecture-review-checklist.md`
-  - Review checklist for validating backend architecture specs before treating them as implementation-ready.
+  - 架构评审清单。
+  - 用于在把 Spec 视为可实施之前，检查边界、契约、运行时语义和风险是否足够清晰。
 
 - `.agents/skills/backend-architecture-refiner/templates/`
-  - Markdown templates for staged spec artifacts, ownership matrices, runtime risks, and state machines.
+  - 分阶段 Spec、归属矩阵、运行时风险和状态机等 Markdown 模板。
 
 - `.agents/skills/lark-doc-reader/SKILL.md`
-  - Workflow for reading Feishu/Lark documents with `lark-cli` and turning external documents into usable design input.
+  - 通过 `lark-cli` 读取飞书/Lark 文档的工作流。
+  - 用于把外部文档转化为可继续分析的设计输入。
 
-## Design Principles
+## 设计原则
 
-- Treat source material as evidence, not truth.
-- Surface contradictions before polishing documents.
-- Clarify ownership before defining contracts.
-- Prefer the simplest design that satisfies the requirement.
-- Record assumptions, rejected options, and unresolved architecture risks.
-- Make backend specs useful for implementation, not only for presentation.
+- 把输入材料当作证据，而不是真理。
+- 在润色文档之前先暴露矛盾。
+- 在定义契约之前先澄清归属。
+- 优先选择能满足需求的最简单设计。
+- 显式记录假设、被拒绝的方案和未解决的架构风险。
+- Spec 必须服务于研发实现，而不只是用于展示。
 
-## Expected Output From The Skills
+## Skills 预期产物
 
-The architecture refinement flow should produce practical backend design artifacts such as:
+架构收敛流程应产出实用的后端设计材料，例如：
 
-- responsibility and ownership boundaries
-- domain model and persistence assumptions
-- API, RPC, event, and task contracts
-- ER diagrams when persistent data exists
-- state diagrams when lifecycle state exists
-- sequence diagrams for main and failure flows
-- idempotency, retry, concurrency, and transaction decisions
-- migration, compatibility, rollback, audit, and observability notes
-- unit, integration, contract, and acceptance test strategy
+- 职责边界和数据归属
+- 领域模型和持久化假设
+- API、RPC、事件和任务契约
+- 存在持久化数据时的 ER 图
+- 存在生命周期状态时的状态图
+- 主流程和失败流程的时序图
+- 幂等、重试、并发和事务边界决策
+- 迁移、兼容、回滚、审计和可观测性说明
+- 单元测试、集成测试、契约测试和验收测试策略
 
-## Repository Scope
+## 仓库范围
 
-This GitHub branch is for reusable SpecX workflow assets only:
+这个 GitHub 分支只用于维护可复用的 SpecX 工作流资产：
 
-- agent instructions
-- architecture refinement skills
-- Lark document reading workflow
-- reusable references and templates
+- 代理行为说明
+- 架构收敛 skills
+- Lark 文档读取工作流
+- 可复用参考资料和模板
 
-Project-specific generated specs should be kept outside this branch unless they are deliberately being published as examples.
+项目专属的生成 Spec 默认不放在这个分支中，除非它们被明确作为公开示例发布。
