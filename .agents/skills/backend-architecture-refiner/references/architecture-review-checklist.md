@@ -82,6 +82,11 @@ Use this checklist before asking the user to confirm each phase.
 # Phase 3 — Contracts & Interfaces
 
 - [ ] Contracts reflect runtime semantics.
+- [ ] All required implementation interfaces are listed, not just examples.
+- [ ] Interface inventory covers APIs, RPCs, events, async jobs/tasks, webhooks/callbacks, batch paths, and internal service/module methods when relevant.
+- [ ] Interface inventory is traced back to use cases, lifecycle transitions, mutations, queries, events, permission-sensitive operations, and operator/admin actions.
+- [ ] Every requirement/flow/state transition has either an interface ID or an explicit explanation for why no backend interface is needed.
+- [ ] Deferred or rejected interfaces are listed with reasons.
 - [ ] Retry behavior visible to callers is explicit.
 - [ ] Idempotency semantics are explicit.
 - [ ] Ordering guarantees are explicit.

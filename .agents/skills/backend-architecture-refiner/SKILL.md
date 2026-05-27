@@ -253,6 +253,35 @@ Define stable contracts only after runtime semantics stabilize.
 
 Contracts must reflect runtime semantics.
 
+Contract design must include a complete implementation interface inventory,
+not just a few representative contracts.
+
+The inventory must be derived from:
+
+- user-visible use cases
+- lifecycle/state transitions
+- commands that mutate owned data
+- queries required by frontend, downstream services, operators, or jobs
+- event producers and event consumers
+- callbacks, webhooks, scheduled jobs, and async workers
+- permission boundaries and actor-specific operations
+- retry, idempotency, timeout, and ordering-sensitive interactions
+
+For every required operation, explicitly decide whether it is implemented as:
+
+- public API
+- internal RPC
+- domain/application service method
+- event topic/message
+- async task/job entrypoint
+- webhook/callback
+- batch/import/export interface
+
+Do not hide missing design behind vague statements like "provide CRUD APIs".
+List each interface that must be implemented, even when the exact schema is
+still draft. If an interface is intentionally deferred or rejected, record the
+reason.
+
 Output:
 
 ```text

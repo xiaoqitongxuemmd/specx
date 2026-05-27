@@ -4,18 +4,75 @@
 
 Brief summary of exposed contracts.
 
+State the contract boundary:
+
+- external caller-facing interfaces
+- internal service/module interfaces
+- async/event/task interfaces
+- interfaces intentionally out of scope
+
 ---
 
-# 2. API / RPC / Event Inventory
+# 2. Required Implementation Interface Inventory
 
-| Contract | Type | Sync/Async |
+List every interface that must be implemented. This is a completeness pass, not
+a representative sample.
+
+## 2.1 Interface Discovery Sources
+
+| Source | Required Interface Implication | Covered By |
 |---|---|---|
+| User-visible use case |  |  |
+| Lifecycle/state transition |  |  |
+| Owned data mutation |  |  |
+| Required read/query |  |  |
+| Event producer |  |  |
+| Event consumer |  |  |
+| Scheduled/async job |  |  |
+| Webhook/callback |  |  |
+| Import/export/batch path |  |  |
+| Permission-sensitive operation |  |  |
+| Operator/admin action |  |  |
+
+## 2.2 Interface Inventory
+
+| Interface ID | Name | Type | Sync/Async | Caller/Producer | Callee/Consumer | Purpose | Must Implement Now? | Notes |
+|---|---|---|
+| IF-001 |  | API/RPC/Event/Task/Webhook/Batch/Internal Method |  |  |  |  | Yes/Deferred/Rejected |  |
+
+## 2.3 Coverage Check
+
+| Requirement / Flow / State Transition | Interface IDs | Gap |
+|---|---|---|
+|  |  |  |
+
+If a requirement has no interface, explain why no backend interface is needed.
 
 ---
 
-# 3. Contract Definition
+# 3. Interface Definition
+
+Repeat this section for every `Must Implement Now = Yes` interface.
+
+For deferred interfaces, keep a short deferred contract note in section 4.
 
 ## Name
+
+### Interface ID
+
+```text
+IF-001
+```
+
+---
+
+### Interface Type
+
+```text
+API / RPC / Event / Task / Webhook / Batch / Internal Method
+```
+
+---
 
 ### Endpoint / Topic / RPC
 
@@ -26,6 +83,18 @@ POST /example
 ---
 
 ### Purpose
+
+- ...
+
+---
+
+### Caller / Producer
+
+- ...
+
+---
+
+### Callee / Consumer
 
 - ...
 
@@ -88,6 +157,13 @@ POST /example
 
 ---
 
+### Compatibility & Versioning
+
+| Concern | Decision |
+|---|---|
+
+---
+
 ### Observability
 
 | Signal | Purpose |
@@ -95,28 +171,36 @@ POST /example
 
 ---
 
-# 4. Contract-Level Risks
+# 4. Deferred / Rejected Interfaces
+
+| Interface | Status | Reason | Revisit Trigger |
+|---|---|---|---|
+|  | Deferred/Rejected |  |  |
+
+---
+
+# 5. Contract-Level Risks
 
 | Risk | Why It Matters |
 |---|---|
 
 ---
 
-# 5. Contract-Level Test Points
+# 6. Contract-Level Test Points
 
 | Scenario | Expected Behavior |
 |---|---|
 
 ---
 
-# 6. Remaining Unresolved Questions
+# 7. Remaining Unresolved Questions
 
 | Question | Impact |
 |---|---|
 
 ---
 
-# 7. Preferred Artifact Output
+# 8. Preferred Artifact Output
 
 Generate when stable:
 
